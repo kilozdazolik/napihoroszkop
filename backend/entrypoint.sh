@@ -1,35 +1,9 @@
-#!/bin/bash
+#!/bin/sh
 set -e
 
-PUID="${PUID:-1036}"
-PGID="${PGID:-100}"
+# NINCS useradd, NINCS groupadd, nincs PUID/PGID kezelés
+# A konténer már eleve appuser-ként fut (Dockerfile intézi)
 
-# Check if group exists, create if not
-if ! getent group "$PGID" >/dev/null 2>&1; then
-    groupadd -g "$PGID" appgrp
-fi
-GRP_NAME=$(getent group "$PGID" | cut -d: -f1)
+cd /app
 
-# Check if user exists, create if not
-if ! getent passwd "$PUID" >/dev/null 2>&1; then
-    useradd -u "$PUID" -g "$PGID" -m appuser
-fi
-USER_NAME=$(getent passwd "$PUID" | cut -d: -f1)
-
-# Ensure directories exist and set ownership
-mkdir -p /app/data
-chown -R "$PUID:$PGID" /app/data
-
-echo "========================================="
-echo "Horoscope Backend"
-echo "========================================="
-echo "Configuration:"
-echo "  - User: $USER_NAME:$GRP_NAME (UID=$PUID, GID=$PGID)"
-echo "  - Port: 6100"
-echo "  - Database: /app/data/horoscope.db"
-echo "========================================="
-echo "Starting application..."
-echo "========================================="
-
-# Execute with correct user using gosu
-exec gosu "$PUID:$PGID" "$@"
+exec uvicorn main:app --host 0.0.0.0 --port 6100
