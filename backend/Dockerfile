@@ -15,8 +15,12 @@ ENV TZ=Europe/Budapest \
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # Create non-root user
-RUN groupadd -g 1001 app && \
-    useradd -u 1001 -g app -s /usr/sbin/nologin -d /app appuser
+RUN if ! getent group app >/dev/null; then \
+        groupadd -g 1001 app; \
+    fi && \
+    if ! getent passwd appuser >/dev/null; then \
+        useradd -u 1001 -g app -s /usr/sbin/nologin -d /app appuser; \
+    fi
 
 WORKDIR /app
 

@@ -50,7 +50,7 @@ export default function Application() {
               "A leiratkozás nem sikerült. Kérlek próbáld meg később újra."
           );
         }
-      } catch (e) {
+      } catch {
         if (!controller.signal.aborted) {
           setUnsubscribeStatus(
             "Hálózati hiba történt a leiratkozás során. Kérlek próbáld meg később újra."
