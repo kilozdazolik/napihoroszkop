@@ -35,7 +35,12 @@ app.add_middleware(
 
 app.add_middleware(
     TrustedHostMiddleware,
-    allowed_hosts=["backend.norkfor.xyz", "localhost", "127.0.0.1"],
+    allowed_hosts=[
+        "backend.norkfor.xyz",
+        "frontend.norkfor.xyz",
+        "localhost",
+        "127.0.0.1",
+    ],
 )
 
 ADMIN_API_KEY = os.getenv("ADMIN_API_KEY")

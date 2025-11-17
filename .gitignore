@@ -65,3 +65,7 @@ lerna-debug.log*
 # Lokális docker-rel kapcsolatos cucc, ha később lenne
 *.pid
 *.seed
+
+
+
+build.sh
